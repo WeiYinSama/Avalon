@@ -2,16 +2,10 @@ package net.avalon.elasticsearch;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.FieldValue;
-import co.elastic.clients.elasticsearch._types.SortMode;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.*;
-import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
-import co.elastic.clients.elasticsearch.core.search.SourceConfig;
 import co.elastic.clients.json.JsonData;
-import co.elastic.clients.util.ObjectBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * @Author: Weiyin
@@ -31,10 +24,24 @@ public class EsClientTest {
     @Autowired
     private ElasticsearchClient client;
 
-    private static final String INDEX = "bank";
 
     /**
-     * 1. 索引单个文档
+     * 全文检索
+     */
+    @Test
+    public void fullRetrieve() throws IOException {
+        String keyword = "老婆";
+        String index = "wife";
+
+        SearchResponse<Object> response = client.search(s -> s.index(index).q(keyword), Object.class);
+        System.out.println("took: " + response.took());
+        System.out.println("total: " + response.hits().total());
+        response.hits().hits().forEach(System.out::println);
+    }
+
+
+    /**
+     * 1. 创建单个文档
      *
      * @throws IOException
      */
@@ -49,7 +56,7 @@ public class EsClientTest {
     }
 
     /**
-     * 2. 索引多个文档
+     * 2. 批量添加
      *
      * @throws IOException
      */
@@ -272,6 +279,7 @@ public class EsClientTest {
 
     /**
      * 15. bool - 年龄24，余额 > 3w
+     *
      * @throws IOException
      */
     @Test
@@ -287,6 +295,7 @@ public class EsClientTest {
 
     /**
      * 16. bool - 姓Smith，年龄 > 30
+     *
      * @throws IOException
      */
     @Test
@@ -302,6 +311,7 @@ public class EsClientTest {
 
     /**
      * 17. bool - 组合查询，性别女、不姓Meyers，年龄最好32
+     *
      * @throws IOException
      */
     @Test
@@ -316,44 +326,4 @@ public class EsClientTest {
         response.hits().hits().forEach(System.out::println);
     }
 
-    @Test
-    public void test() throws IOException {
-
-    }
-
-    @Test
-    public void getDocById() throws IOException {
-
-        GetResponse<Employee> response = client.get(g -> g
-                .index("employee")
-                .id("100"), Employee.class);
-
-        if (response.found()) {
-            Employee source = response.source();
-            System.out.println(source);
-        } else {
-            System.out.println("Employee not found");
-        }
-    }
-
-    @Test
-    public void getAllDoc() throws IOException {
-
-
-//        SearchResponse<Employee> search = client.search(s -> s.index("employee").query(q -> q.match(m -> m.field("firstname").query("John"))), Employee.class);
-//        System.out.println(search.hits().total());
-//        search.hits().hits().forEach(System.out::println);
-
-        SearchResponse<Wife> response = client.search(s -> s.index("wife")
-                .q("weiyin的老婆"), Wife.class);
-
-        response.hits().hits().forEach(System.out::println);
-        System.out.println(response.took());
-
-
-//        SearchResponse<Employee> search1 = client.search(sr -> sr.index("employee"), Employee.class);
-//        System.out.println(search1.hits().total());
-//        search1.hits().hits().forEach(System.out::println);
-
-    }
 }
