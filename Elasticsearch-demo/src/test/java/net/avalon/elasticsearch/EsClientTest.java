@@ -64,7 +64,7 @@ public class EsClientTest {
     public void indexMultipleDocs() throws IOException {
 
         Wife w1 = new Wife("胡桃", 16, "weiyin の 老婆~", List.of("嗷~"));
-        Wife w2 = new Wife("里想奈", 14, "weiyin の 老婆~", List.of("古灵精怪"));
+        Wife w2 = new Wife("里想奈", 14, "weiyin の 老婆~", List.of("十分喜欢"));
         List<Wife> list = List.of(w1, w2);
 
         BulkRequest.Builder br = new BulkRequest.Builder();
