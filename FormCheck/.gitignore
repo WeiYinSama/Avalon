@@ -6,15 +6,18 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
-.mvn/timing.properties
+
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
+
 
 .idea
 
 renren-fast
 logs
-
+.mvn
+HELP.md
+mvnw
+mvnw.cmd
 src/main/resources/static
 src/main/resources/templates
-src/main/resources/application.properties
+*.iml
