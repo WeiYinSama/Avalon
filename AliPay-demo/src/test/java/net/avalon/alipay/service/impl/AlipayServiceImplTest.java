@@ -38,22 +38,20 @@ class AlipayServiceImplTest {
 
         String tradeStatus = null;
         //循环查询订单状态
-        int count = 10;
-        int last = count - 1;
-        for (int i = 0; i < count; i++) {
-            Thread.sleep(6 * 1000L);
-            log.info("第{}次查询", i + 1);
+        for (int i = 0; i < 36; i++) {
+            Thread.sleep(5 * 1000L);
             tradeStatus = alipayService.tradeQuery(order);
-
-            if (i != last) {
-                if (tradeStatus == null) continue;
-                if (tradeStatus.equals("TRADE_SUCCESS")) break;
-            } else {
-                if (tradeStatus == null || !tradeStatus.equals("TRADE_SUCCESS")) {
-                    alipayService.tradeCancel(order);
-                }
+            log.info("第{}次查询，订单状态：{}", i + 1,tradeStatus);
+            if("TRADE_SUCCESS".equals(tradeStatus)){
+                //TODO 持久化订单
+                log.info("持久化订单中...");
+                //TODO 扣库存
+                log.info("库存扣除中...");
+                break;
             }
-
+            if(i == 35){
+                alipayService.tradeCancel(order);
+            }
         }
     }
 
@@ -75,7 +73,7 @@ class AlipayServiceImplTest {
     @Test
     void tradeQuery() {
         Order order = new Order();
-        order.setOrderSn("20230427093700039");
+        order.setOrderSn("20230427140000002");
         alipayService.tradeQuery(order);
 
     }

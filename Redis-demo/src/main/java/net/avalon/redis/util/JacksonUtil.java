@@ -1,5 +1,5 @@
 //School of Informatics Xiamen University, GPL-3.0 license
-package net.avalon.redis;
+package net.avalon.redis.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -1,6 +1,8 @@
 package net.avalon.redis;
 
 import lombok.extern.slf4j.Slf4j;
+import net.avalon.redis.domain.Wife;
+import net.avalon.redis.util.JacksonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +12,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,8 +42,10 @@ public class RedisTest {
     static {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("if redis.call('get', KEYS[1]) >= ARGV[1] then ");
-        sb.append("    return redis.call('decrby', KEYS[1], ARGV[1]) ");
+        sb.append("local count = tonumber(redis.call('get',KEYS[1])) ");
+        sb.append("local quantity = tonumber(ARGV[1]) ");
+        sb.append("if count >= quantity then ");
+        sb.append("    return redis.call('decrby', KEYS[1], quantity) ");
         sb.append("else ");
         sb.append("    return -1 ");
         sb.append("end");
@@ -48,16 +53,16 @@ public class RedisTest {
     }
 
     /**
-     * 缓存的几个问题：
-     * 1. 查询的数据未缓存，需要访问数据库
-     * 2. 缓存的数据同时过期
-     * 3.
+     * 对象的存取
+     * <p>
+     * object -> json
+     * json -> object
      */
     @Test
     public void test() {
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
 
-        Wife w1 = new Wife(1L, "露娜", 14, "weiyin の 老婆~", List.of("偶像"));
+        Wife w1 = new Wife(1L, "露娜", 14, "weiyin の 老婆~", LocalDateTime.now(), List.of("偶像"));
         String s = JacksonUtil.toJson(w1);
 
         ops.set("wife", s);
@@ -66,27 +71,6 @@ public class RedisTest {
 
         Wife w2 = JacksonUtil.toObj(value, Wife.class);
         System.out.println(w2);
-    }
-
-
-    @Test
-    public void countTest() {
-
-//        ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
-
-        ValueOperations<String, Serializable> ops = redisTemplate.opsForValue();
-
-        String s = UUID.randomUUID().toString();
-        System.out.println(s);
-
-        ops.set(s, 100);
-
-        for (int i = 0; i < 100; i++) {
-            ops.increment(s, -2);
-        }
-
-        System.out.println(ops.get(s));
-
     }
 
     /**
@@ -110,7 +94,7 @@ public class RedisTest {
             users.add(
                     () -> {
                         Long product = redisTemplate.execute(script, List.of("product"), 1);
-                        log.info("Status: {}",product);
+                        log.info("Status: {}", product);
                         return product;
                     }
             );
@@ -121,4 +105,5 @@ public class RedisTest {
         pool.invokeAll(users);
 
     }
+
 }
