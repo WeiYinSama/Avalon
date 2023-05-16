@@ -20,6 +20,8 @@ public enum AvalonStatus {
     ALIPAY_TRADE_NOT_EXIST(500005,"交易不存在"),
 
 
+    FILE_UPLOAD_FAIL(500006,"文件上传失败"),
+    FILE_ACCESS_FAIL(500007,"文件无法访问，请检查路径"),
 
     /* *********** 自定义错误码 *********** */
     //客户端错误 6xx

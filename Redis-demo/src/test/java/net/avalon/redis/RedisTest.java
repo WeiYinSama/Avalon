@@ -11,11 +11,10 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,7 +31,7 @@ public class RedisTest {
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
-    private RedisTemplate<String, Serializable> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 扣减库存 Lua 脚本
@@ -104,6 +103,52 @@ public class RedisTest {
 
         pool.invokeAll(users);
 
+    }
+
+    /**
+     * 即使输入的值是字符串，但只要能被解释为整数，就可以将它当作整数处理
+     */
+    @Test
+    void stringRedisTemplateTest() {
+
+        Wife wife = new Wife();
+        wife.setName("Miku");
+        wife.setCreateTime(LocalDateTime.now());
+
+        stringRedisTemplate.opsForValue().set("wife",JacksonUtil.toJson(wife));
+
+        String w1 = stringRedisTemplate.opsForValue().get("wife");
+        log.info("w1 = " + w1);
+    }
+
+    /**
+     * 编码方式：
+     * listpack    <= 128
+     * skiplist     > 128
+     */
+    @Test
+    void zset() {
+        Random random = new Random();
+
+        for (int i = 0; i < 128; i++) {
+            int randomScore = random.nextInt(1000);
+            redisTemplate.opsForZSet().add("z1",i,randomScore);
+        }
+    }
+
+    /**
+     * 编码方式：
+     * > 512   hashtable
+     * <= 512  listpack
+     */
+    @Test
+    void hash() {
+        Random random = new Random();
+
+        for (int i = 0; i < 513; i++) {
+            int randomScore = random.nextInt(1000);
+            redisTemplate.opsForHash().put("h1",String.format("%s",i),randomScore);
+        }
     }
 
 }
