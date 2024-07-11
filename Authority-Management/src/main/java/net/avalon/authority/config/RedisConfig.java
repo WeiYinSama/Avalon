@@ -1,4 +1,4 @@
-package net.avalon.redis.config;
+package net.avalon.authority.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +13,6 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
 
 /**
  * @Author: Weiyin
@@ -57,5 +56,4 @@ public class RedisConfig {
 
         return template;
     }
-
 }

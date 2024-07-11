@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.avalon.mybatis.mapper.ComicMapper">
+
+    <insert id="insertComic" parameterType="net.avalon.mybatis.po.Comic" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comic(name,author,deleted,create_time) VALUES (#{name}, #{author},#{deleted},#{createTime})
+    </insert>
+    <update id="updateComic" parameterType="net.avalon.mybatis.po.Comic">
+        update comic set name = #{name} where id = #{id}
+    </update>
+    <delete id="deleteById" parameterType="long">
+        delete from comic where id = #{id}
+    </delete>
+
+
+</mapper>

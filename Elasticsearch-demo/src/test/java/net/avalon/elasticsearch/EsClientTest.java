@@ -30,8 +30,8 @@ public class EsClientTest {
      */
     @Test
     public void fullRetrieve() throws IOException {
-        String keyword = "老婆";
-        String index = "wife";
+        String keyword = "iphone";
+        String index = "product";
 
         SearchResponse<Object> response = client.search(s -> s.index(index).q(keyword), Object.class);
         System.out.println("took: " + response.took());
