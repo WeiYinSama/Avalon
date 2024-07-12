@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public enum AvalonStatus {
 
-    /*           信息响应           */
+    /*           信息响应       哈哈哈    */
     // 102 Processing
     // 服务器已收到并正在处理该请求，但当前没有响应可用。
 
