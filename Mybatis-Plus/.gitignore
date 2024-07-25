@@ -1,0 +1,13 @@
+target/
+.idea
+
+renren-fast
+logs
+.mvn
+HELP.md
+mvnw
+mvnw.cmd
+src/main/resources/static
+src/main/resources/templates
+*.iml
+Avalon-Generic.zip
