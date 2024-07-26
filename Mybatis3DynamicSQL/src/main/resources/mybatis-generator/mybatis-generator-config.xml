@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="mybatis-generator/generator.properties"/>
+
+    <context id="dsql" targetRuntime="MyBatis3DynamicSql">
+
+        <!--数据库连接信息 -->
+        <jdbcConnection driverClass="${driverClassName}"
+                        connectionURL="${url}"
+                        userId="${username}"
+                        password="${password}">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <!-- This property is used to specify whether MyBatis Generator should force the use of JSR-310 data types for DATE, TIME,
+                        and TIMESTAMP fields, rather than using java.util.Date -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="net.avalon.dynamicsql.mapper.generator.po"
+                            targetProject="src/main/java">
+        </javaModelGenerator>
+
+        <javaClientGenerator targetPackage="net.avalon.dynamicsql.mapper.generator"
+                             targetProject="src/main/java">
+        </javaClientGenerator>
+
+        <table tableName="comic" domainObjectName="ComicPo">
+            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+            <property name="useActualColumnNames" value="false"/>
+            <!-- The column has a generated key, it is an identity column, and the database type is Mysql.
+            This will cause MBG to generate the proper <selectKey> element in the generated <insert> statement
+            so that the newly generated key can be returned. -->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+        <table tableName="label" domainObjectName="LabelPo">
+            <!-- 如果设置为true，生成的model类会直接使用column本身的名字，而不会再使用驼峰命名方法，比如BORN_DATE，生成的属性名字就是BORN_DATE,而不会是bornDate -->
+            <property name="useActualColumnNames" value="false"/>
+            <!-- The column has a generated key, it is an identity column, and the database type is Mysql.
+            This will cause MBG to generate the proper <selectKey> element in the generated <insert> statement
+            so that the newly generated key can be returned. -->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
+    </context>
+
+</generatorConfiguration>

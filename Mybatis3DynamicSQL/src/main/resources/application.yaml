@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    #JDBC驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #数据库服务器url
+    url: jdbc:mysql://localhost:3306/ciallo?serverTimezone=Asia/Shanghai
+    #数据库服务器用户名和密码
+    username: root
+    password: Hd15364514749+
+
+logging:
+  level:
+    root: debug
