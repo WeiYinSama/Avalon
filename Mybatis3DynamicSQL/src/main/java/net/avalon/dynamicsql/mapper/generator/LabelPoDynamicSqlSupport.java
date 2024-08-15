@@ -2,7 +2,8 @@ package net.avalon.dynamicsql.mapper.generator;
 
 import java.sql.JDBCType;
 import java.time.LocalDateTime;
-import javax.annotation.Generated;
+
+import jakarta.annotation.Generated;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
 

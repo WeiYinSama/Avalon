@@ -5,7 +5,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Generated;
 
 import net.avalon.dynamicsql.Comic;
 import net.avalon.dynamicsql.mapper.generator.po.ComicPo;
@@ -34,15 +33,13 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface ComicPoMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1261484+08:00", comments="Source Table: comic")
+
     BasicColumn[] selectList = BasicColumn.columnList(id, name, cover, author, nameCn, translator, introduction, view, region, adult, type, categoryId, userId, deleted, createTime, updateTime);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1216385+08:00", comments="Source Table: comic")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.id", before=false, resultType=Long.class)
     int insert(InsertStatementProvider<ComicPo> insertStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1236178+08:00", comments="Source Table: comic")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="ComicPoResult", value = {
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
@@ -72,29 +69,28 @@ public interface ComicPoMapper extends CommonCountMapper, CommonDeleteMapper, Co
     })
     List<Comic> twoTable(SelectStatementProvider selectStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1246162+08:00", comments="Source Table: comic")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @ResultMap("ComicPoResult")
     Optional<ComicPo> selectOne(SelectStatementProvider selectStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1246162+08:00", comments="Source Table: comic")
+    default Optional<ComicPo> selectOne(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectOne(this::selectOne, selectList, comicPo, completer);
+    }
+
     default long count(CountDSLCompleter completer) {
         return MyBatis3Utils.countFrom(this::count, comicPo, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1246162+08:00", comments="Source Table: comic")
     default int delete(DeleteDSLCompleter completer) {
         return MyBatis3Utils.deleteFrom(this::delete, comicPo, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1246162+08:00", comments="Source Table: comic")
     default int deleteByPrimaryKey(Long id_) {
         return delete(c -> 
             c.where(id, isEqualTo(id_))
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1246162+08:00", comments="Source Table: comic")
     default int insert(ComicPo row) {
         return MyBatis3Utils.insert(this::insert, row, comicPo, c ->
             c.map(name).toProperty("name")
@@ -115,7 +111,6 @@ public interface ComicPoMapper extends CommonCountMapper, CommonDeleteMapper, Co
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1261484+08:00", comments="Source Table: comic")
     default int insertSelective(ComicPo row) {
         return MyBatis3Utils.insert(this::insert, row, comicPo, c ->
             c.map(name).toPropertyWhenPresent("name", row::getName)
@@ -136,34 +131,26 @@ public interface ComicPoMapper extends CommonCountMapper, CommonDeleteMapper, Co
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1261484+08:00", comments="Source Table: comic")
-    default Optional<ComicPo> selectOne(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectOne(this::selectOne, selectList, comicPo, completer);
-    }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1261484+08:00", comments="Source Table: comic")
+
     default List<ComicPo> select(SelectDSLCompleter completer) {
         return MyBatis3Utils.selectList(this::selectMany, selectList, comicPo, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1276743+08:00", comments="Source Table: comic")
     default List<ComicPo> selectDistinct(SelectDSLCompleter completer) {
         return MyBatis3Utils.selectDistinct(this::selectMany, selectList, comicPo, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1276743+08:00", comments="Source Table: comic")
     default Optional<ComicPo> selectByPrimaryKey(Long id_) {
         return selectOne(c ->
             c.where(id, isEqualTo(id_))
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1276743+08:00", comments="Source Table: comic")
     default int update(UpdateDSLCompleter completer) {
         return MyBatis3Utils.update(this::update, comicPo, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1284537+08:00", comments="Source Table: comic")
     static UpdateDSL<UpdateModel> updateAllColumns(ComicPo row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(name).equalTo(row::getName)
                 .set(cover).equalTo(row::getCover)
@@ -182,7 +169,6 @@ public interface ComicPoMapper extends CommonCountMapper, CommonDeleteMapper, Co
                 .set(updateTime).equalTo(row::getUpdateTime);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1284537+08:00", comments="Source Table: comic")
     static UpdateDSL<UpdateModel> updateSelectiveColumns(ComicPo row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(name).equalToWhenPresent(row::getName)
                 .set(cover).equalToWhenPresent(row::getCover)
@@ -201,7 +187,6 @@ public interface ComicPoMapper extends CommonCountMapper, CommonDeleteMapper, Co
                 .set(updateTime).equalToWhenPresent(row::getUpdateTime);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1284537+08:00", comments="Source Table: comic")
     default int updateByPrimaryKey(ComicPo row) {
         return update(c ->
             c.set(name).equalTo(row::getName)
@@ -223,7 +208,6 @@ public interface ComicPoMapper extends CommonCountMapper, CommonDeleteMapper, Co
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2024-07-26T20:41:12.1294699+08:00", comments="Source Table: comic")
     default int updateByPrimaryKeySelective(ComicPo row) {
         return update(c ->
             c.set(name).equalToWhenPresent(row::getName)
