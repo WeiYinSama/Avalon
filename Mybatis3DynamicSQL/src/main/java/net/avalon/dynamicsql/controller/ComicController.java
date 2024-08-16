@@ -42,19 +42,13 @@ public class ComicController {
                               @RequestParam(required = false) String name,
                               @RequestParam(required = false) String author) {
 
-        var table = select(comicPo.allColumns()).from(comicPo);
-        var conditions = table.where(deleted, isEqualTo((byte) 0));
-
-        if (name != null) {
-            conditions.and(comicPo.name, isLike("%" + name + "%"));
-        }
-        if (author != null) {
-            conditions.and(comicPo.author, isLike("%" + author + "%"));
-        }
-        SelectStatementProvider provider = conditions.orderBy(comicPo.id.descending())
+        SelectStatementProvider provider = select(comicPo.allColumns()).from(comicPo)
+                .where(deleted, isEqualTo((byte) 0))
+                .and(comicPo.name, isLikeWhenPresent(Optional.ofNullable(name).map(n -> "%" + n + "%").orElse(null)))
+                .and(comicPo.author, isLikeWhenPresent(Optional.ofNullable(author).map(n -> "%" + n + "%").orElse(null)))
                 .build().render(RenderingStrategies.MYBATIS3);
 
-        PageHelper.startPage(page, pageSize, false);
+        PageHelper.startPage(page, pageSize, false).setOrderBy("id desc");
         return mapper.selectMany(provider);
     }
 

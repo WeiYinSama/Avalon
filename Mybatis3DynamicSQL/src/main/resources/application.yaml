@@ -7,6 +7,10 @@ spring:
     #数据库服务器用户名和密码
     username: root
     password: Hd15364514749+
+    type: com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceWrapper
+    druid:
+      initial-size: 10
+      max-active: 16
 
 logging:
   level:
