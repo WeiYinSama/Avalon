@@ -14,10 +14,12 @@ import org.mybatis.dynamic.sql.select.SelectModel;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
 import static net.avalon.dynamicsql.mapper.generator.ComicPoDynamicSqlSupport.*;
@@ -35,21 +37,41 @@ public class ComicController {
 
 
     @GetMapping("/page")
-    public List<ComicPo> page(@RequestParam(required = false) String name, @RequestParam(required = false) String author) {
+    public List<ComicPo> page(@RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "10") int pageSize,
+                              @RequestParam(required = false) String name,
+                              @RequestParam(required = false) String author) {
 
         var table = select(comicPo.allColumns()).from(comicPo);
-        var conditions = table.where(deleted,isEqualTo((byte) 0));
+        var conditions = table.where(deleted, isEqualTo((byte) 0));
 
-        if (name!= null) {
+        if (name != null) {
             conditions.and(comicPo.name, isLike("%" + name + "%"));
         }
-        if(author != null){
+        if (author != null) {
             conditions.and(comicPo.author, isLike("%" + author + "%"));
         }
         SelectStatementProvider provider = conditions.orderBy(comicPo.id.descending())
                 .build().render(RenderingStrategies.MYBATIS3);
 
-        PageHelper.startPage(1,10,false);
+        PageHelper.startPage(page, pageSize, false);
         return mapper.selectMany(provider);
     }
+
+    @GetMapping("/get/{id}")
+    public ComicPo id(@PathVariable("id") Long id) {
+
+
+        Optional<ComicPo> optional = mapper.selectByPrimaryKey(id);
+        return optional.orElse(null);
+    }
+
+    @GetMapping("/getByName/{name}")
+    public List<ComicPo> getByName(@PathVariable("name") String name) {
+
+        return mapper.select(c -> c
+                .where(comicPo.name, isLike("%" + name + "%"))
+                .orderBy(comicPo.id.descending()));
+    }
+
 }

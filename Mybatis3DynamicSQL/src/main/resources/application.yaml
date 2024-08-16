@@ -11,3 +11,5 @@ spring:
 logging:
   level:
     root: debug
+  charset:
+    console: utf-8
