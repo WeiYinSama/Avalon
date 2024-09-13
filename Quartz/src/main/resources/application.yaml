@@ -1,0 +1,6 @@
+logging:
+  level:
+    root: info
+  charset:
+    console: utf-8
+
