@@ -2,6 +2,8 @@ package net.avalon.dynamicsql.controller;
 
 
 import com.github.pagehelper.PageHelper;
+import lombok.extern.slf4j.Slf4j;
+import net.avalon.dynamicsql.Comic;
 import net.avalon.dynamicsql.mapper.generator.ComicPoDynamicSqlSupport;
 import net.avalon.dynamicsql.mapper.generator.ComicPoMapper;
 import net.avalon.dynamicsql.mapper.generator.po.ComicPo;
@@ -13,10 +15,7 @@ import org.mybatis.dynamic.sql.select.SelectDSL;
 import org.mybatis.dynamic.sql.select.SelectModel;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +29,7 @@ import static net.avalon.dynamicsql.mapper.generator.ComicPoDynamicSqlSupport.*;
  * @Create: 2024/8/15
  */
 @RestController
+@Slf4j
 public class ComicController {
 
     @Autowired
@@ -66,6 +66,19 @@ public class ComicController {
         return mapper.select(c -> c
                 .where(comicPo.name, isLike("%" + name + "%"))
                 .orderBy(comicPo.id.descending()));
+    }
+
+
+    @PostMapping("/add")
+    public Comic add(@RequestBody Comic comic){
+
+        log.info("接口被调用，参数：{}",comic);
+
+        ComicPo po = new ComicPo();
+        po.setAuthor("Weiyin");
+        comic.setComicPo(po);
+
+        return comic;
     }
 
 }
