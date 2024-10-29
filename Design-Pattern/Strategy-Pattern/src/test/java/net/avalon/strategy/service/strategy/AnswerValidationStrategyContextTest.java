@@ -23,8 +23,7 @@ public class AnswerValidationStrategyContextTest {
         String userAnswer = "正确^错误^嘻嘻";
         String correctAnswer = "正确,错误,嘻嘻";
 
-        AnswerValidationStrategy strategy = context.getStrategy("5");
-        boolean result = strategy.validate(userAnswer, correctAnswer);
+        boolean result = context.checkAnswer("3",userAnswer,correctAnswer);
 
         log.info("自动判题结果：{}", result);
 

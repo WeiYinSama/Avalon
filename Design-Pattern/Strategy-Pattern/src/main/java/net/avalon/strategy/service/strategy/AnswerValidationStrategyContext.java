@@ -35,12 +35,17 @@ public class AnswerValidationStrategyContext implements ApplicationContextAware 
         }
     }
 
-    public AnswerValidationStrategy getStrategy(String questionType) {
+    private AnswerValidationStrategy getStrategy(String questionType) {
         AnswerValidationStrategy strategy = strategyMap.get(questionType);
         if (strategy == null) {
             log.warn("未找到对应的校验策略");
             throw new RuntimeException("未找到对应的校验策略: " + questionType);
         }
         return strategy;
+    }
+
+    public boolean checkAnswer(String questionType, String userAnswer, String correctAnswer) {
+        AnswerValidationStrategy validator = getStrategy(questionType);
+        return validator.validate(userAnswer, correctAnswer);
     }
 }
