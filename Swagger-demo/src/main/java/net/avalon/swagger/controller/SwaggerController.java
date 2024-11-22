@@ -4,14 +4,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author weiyin
- * @time 2022/11/29 - 21:46
+ * @Author: Heda
+ * @Create: 2024/11/22
  */
 @RestController
-public class SwaggerDemoController {
+public class SwaggerController {
 
-    @GetMapping("/hello")
-    public String hello(){
-        return String.format("hello,world");
+
+    @GetMapping("/hi")
+    public String hi(){
+        return "Hello, Swagger!";
     }
 }

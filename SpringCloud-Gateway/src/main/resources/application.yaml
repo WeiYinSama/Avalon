@@ -9,6 +9,19 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     gateway:
+      # 跨域
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins:
+              - "*"
+            allowed-headers:
+              - "*"
+            allowed-methods:
+              - "*"
+            exposed-headers:
+              - "*"
+            max-age: 3600
       routes:
         - id: demo-service
           uri: lb://demo # 这里的 "file-service" 是服务在 Nacos 中的名称
@@ -16,4 +29,4 @@ spring:
             - Path=/demo/**  # 例如所有以 /demo 开头的请求都会转发到文件服务
           filters:
             - StripPrefix=1  # 去掉请求路径中的前缀部分
-#            - name: CustomGatewayFilter
+            - Auth
