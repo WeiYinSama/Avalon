@@ -1,10 +1,35 @@
 server:
+  # 随机端口
   port: 0
 
 spring:
   application:
-    name: feign
+    name: openfeign
   cloud:
     nacos:
       discovery:
+        # nacos 地址
         server-addr: 127.0.0.1:8848
+    openfeign:
+      # 使用 HttpClient5
+      httpclient:
+        hc5:
+          enabled: true
+      # 配置 Timeout
+#      client:
+#        config:
+#          default:
+#            # 连接超时
+#            connectTimeout: 3000
+#            # 读取超时(默认 60s)
+#            readTimeout: 5000
+
+
+# 开启 OpenFeign 日志（logging.level + 完整类名 + DEBUG）
+#logging:
+#  level:
+#    net:
+#      avalon:
+#        feign:
+#          client:
+#            DemoClient: DEBUG
