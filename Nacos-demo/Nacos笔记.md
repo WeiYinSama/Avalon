@@ -18,7 +18,7 @@ cd nacos/bin
 
 ```shell
 # Linux/Unix/Mac
-sh startup.sh -m standalone
+bash startup.sh -m standalone
 # Windows
 startup.cmd -m standalone
 ```
